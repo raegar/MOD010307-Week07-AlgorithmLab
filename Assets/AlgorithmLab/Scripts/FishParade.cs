@@ -302,7 +302,20 @@ namespace AlgorithmLab
         /// <summary>Step A3: sort the fish from smallest (index 0) to biggest, using insertion sort.</summary>
         private IEnumerator InsertionSort()
         {
-            yield break;   // replace this in step A3
+            for (int i = 1; i < fish.Count; i++)
+            {
+                // Everything above index i is already sorted. Take fish i and slide it up
+                // (one swap at a time) until the fish above it is smaller.
+                int j = i;
+                while (j > 0)
+                {
+                    checks++;
+                    if (fish[j - 1].Size <= fish[j].Size) break;   // it's in the right place: stop
+                    Swap(j - 1, j);
+                    yield return new WaitForSeconds(stepDelay);
+                    j--;
+                }
+            }
         }
     }
 }
