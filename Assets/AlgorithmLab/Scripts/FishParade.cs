@@ -252,13 +252,28 @@ namespace AlgorithmLab
         /// <summary>Step A1: the index of the first fish of this kind, or -1 if there isn't one.</summary>
         private int IndexOfKind(FishKind kind)
         {
-            return -1;   // replace this in step A1
+            // Linear search: look at each fish in turn, from index 0 to the end.
+            for (int i = 0; i < fish.Count; i++)
+            {
+                checks++;
+                fish[i].SetMark(Mark.Checked);
+                if (fish[i].Kind == kind) return i;   // found it: stop looking
+            }
+            return -1;   // looked at every fish, and none matched
         }
 
         /// <summary>Step A1: the index of the biggest fish.</summary>
         private int IndexOfBiggest()
         {
-            return -1;   // replace this in step A1
+            // Best so far: start by assuming the first fish is the biggest...
+            int biggest = 0;
+            for (int i = 1; i < fish.Count; i++)
+            {
+                checks++;
+                // ...then compare each of the others with the best so far.
+                if (fish[i].Size > fish[biggest].Size) biggest = i;
+            }
+            return biggest;
         }
 
         /// <summary>Step A2: sort the fish from smallest (index 0) to biggest, using selection sort.</summary>
