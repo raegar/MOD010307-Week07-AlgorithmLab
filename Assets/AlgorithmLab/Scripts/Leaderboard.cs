@@ -127,13 +127,34 @@ namespace AlgorithmLab
         /// <summary>Step A4: where a new score would go (0 = the top), checking each entry from the top down.</summary>
         private int LinearRank(int score)
         {
-            return -1;   // replace this in step A4
+            for (int i = 0; i < entries.Count; i++)
+            {
+                checks++;
+                if (score > entries[i].score) return i;   // beats this entry, so it goes just above it
+            }
+            return entries.Count;   // beats nobody: it goes at the very bottom
         }
 
         /// <summary>Step A4: where a new score would go (0 = the top), using binary search.</summary>
         private int BinaryRank(int score)
         {
-            return -1;   // replace this in step A4
+            // The answer is somewhere from low to high. At the start, that's anywhere in the board.
+            int low = 0;
+            int high = entries.Count;
+            while (low < high)
+            {
+                int mid = (low + high) / 2;   // look at the middle of what's left
+                checks++;
+                if (score > entries[mid].score)
+                {
+                    high = mid;               // beats mid: the answer is mid or above, so throw away the bottom half
+                }
+                else
+                {
+                    low = mid + 1;            // doesn't beat mid: the answer is below mid, so throw away the top half
+                }
+            }
+            return low;                       // low and high have met: that's the place
         }
     }
 }
