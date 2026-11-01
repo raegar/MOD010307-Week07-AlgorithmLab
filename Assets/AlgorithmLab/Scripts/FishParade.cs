@@ -279,7 +279,24 @@ namespace AlgorithmLab
         /// <summary>Step A2: sort the fish from smallest (index 0) to biggest, using selection sort.</summary>
         private IEnumerator SelectionSort()
         {
-            yield break;   // replace this in step A2
+            for (int i = 0; i < fish.Count - 1; i++)
+            {
+                // Find the smallest fish from index i to the end. (The same search as IndexOfBiggest, but smallest.)
+                int smallest = i;
+                for (int j = i + 1; j < fish.Count; j++)
+                {
+                    checks++;
+                    if (fish[j].Size < fish[smallest].Size) smallest = j;
+                }
+
+                // Swap it into place i. Now everything from 0 to i is sorted, and never moves again.
+                if (smallest != i)
+                {
+                    Swap(i, smallest);
+                    yield return new WaitForSeconds(stepDelay);
+                }
+                fish[i].SetMark(Mark.Sorted);
+            }
         }
 
         /// <summary>Step A3: sort the fish from smallest (index 0) to biggest, using insertion sort.</summary>
